@@ -68,12 +68,16 @@ actual_distance_to_object_green = mm_per_pixel_picture_height*top_to_object_gree
 
 %% Calculation coin
 
+clear
+
 startup_rvc;
 
-border_to_coin = 513.95;
+imtool('C:\Users\Jacobmosehansen\Desktop\IKT\6_Semester\ITROB\itrob_repo\Billeder\Moent.jpg')
+
+border_to_coin = 514.27;
 border_to_coin_measured = 59;
 top_to_coin_measured = 9.6;
-top_to_coin = 85.09;
+top_to_coin = 84.29;
 
 resolution_coin_width = 70/611;
 resolution_coin_heigth = 39.5/344;
@@ -81,9 +85,66 @@ resolution_coin_heigth = 39.5/344;
 actual_distance_width_coin = resolution_coin_width*border_to_coin
 actual_distance_height_coin = resolution_coin_heigth*top_to_coin
 
-robot_frame = se2(34.2, 35, pi)
+robot_frame = se2(34.7, 33.9, pi)
 P_coin_camera_frame = [actual_distance_height_coin ; actual_distance_width_coin]
 P_coin_robot_frame = inv(robot_frame)*[P_coin_camera_frame; 1]
+
+%% BLUE
+
+clear
+
+startup_rvc;
+
+x_coordinate = 76+5; %5
+y_coordinate = 69-5; %1
+
+resolution__width = 70/611;
+resolution__heigth = 39.5/344;
+
+actual_distance_width = resolution__width*x_coordinate;
+actual_distance_height = resolution__heigth*y_coordinate;
+
+robot_frame = se2(34.7, 33.9, pi);
+P_yx_camera_frame = [actual_distance_height ; actual_distance_width] % Output = y,x
+P_xyz_robot_frame = inv(robot_frame)*[P_yx_camera_frame; 1] % Output = x,y,z
+
+%% YELLOW
+
+clear
+
+startup_rvc;
+
+x_coordinate = 507+5; %5
+y_coordinate = 76-5; %1
+
+resolution__width = 70/611;
+resolution__heigth = 39.5/344;
+
+actual_distance_width = resolution__width*x_coordinate;
+actual_distance_height = resolution__heigth*y_coordinate;
+
+robot_frame = se2(34.7, 33.9, pi);
+P_yx_camera_frame = [actual_distance_height ; actual_distance_width] % Output = y,x
+P_xyz_robot_frame = inv(robot_frame)*[P_yx_camera_frame; 1] % Output = x,y,z
+
+%% GREEN
+
+clear
+
+startup_rvc;
+
+x_coordinate = 40; %5
+y_coordinate = 300-5; %1
+
+resolution__width = 70/611;
+resolution__heigth = 39.5/344;
+
+actual_distance_width = resolution__width*x_coordinate;
+actual_distance_height = resolution__heigth*y_coordinate;
+
+robot_frame = se2(34.7, 33.9, pi);
+P_yx_camera_frame = [actual_distance_height ; actual_distance_width] % Output = y,x
+P_xyz_robot_frame = inv(robot_frame)*[P_yx_camera_frame; 1] % Output = x,y,z
 
 
 
