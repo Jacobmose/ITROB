@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+
+import planar
+from planar import Affine
+
+
+T1 = Affine.translation((1, 2))
+print(T1)
