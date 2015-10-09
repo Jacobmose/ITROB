@@ -37,7 +37,7 @@ def calculateObjectPosition(x_pixel, y_pixel):
 
 	return P_xyz_robot_frame
 
-print(calculateObjectPosition(40, 295))
+
 
 
 
