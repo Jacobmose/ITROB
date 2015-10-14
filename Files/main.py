@@ -49,7 +49,7 @@ def invkin(xyz):
 
 class ActionExampleNode:
 	N_JOINTS = 5
-	def __init__(self,server_name, x_coord, y_coord, isPickup):
+	def __init__(self,server_name, x_coord, y_coord, angle, isPickup):
 		self.client = actionlib.SimpleActionClient(server_name, FollowJointTrajectoryAction)
 
 		self.joint_positions = []
@@ -64,7 +64,7 @@ class ActionExampleNode:
 		if isPickup:
 			xyz_positions = pickup(x_coord, y_coord)
 		else:
-			xyz_positions = delivery(x_coord, y_coord)	
+			xyz_positions = delivery(x_coord, y_coord, angle)	
 		
 		# initial duration
 		dur = rospy.Duration(2) #Init Speed
@@ -87,10 +87,11 @@ class ActionExampleNode:
 		#print self.client.get_result()
 
 class ObjectPosition(object):
-	def __init__(self, y_coord=None, x_coord=None, color=None):
+	def __init__(self, y_coord=None, x_coord=None, color=None, angle=None):
 		self.y_coord = y_coord
 		self.x_coord = x_coord
 		self.color = color
+		self.angle = angle
 
 def checkForQRCode():
 	print("Sleep 2 seconds..")
@@ -99,31 +100,45 @@ def checkForQRCode():
 
 def getQRString():
 	return "patternTest"
+	#return "patternTest2"
 
 def getPattern(QRString):
-	patternTestList = []
-	patternTestList.append(ObjectPosition(-23, 0, "red"))
-	patternTestList.append(ObjectPosition(-22, 10, "green"))
-	patternTestList.append(ObjectPosition(-21, 17, "blue"))
-	patternTestList.append(ObjectPosition(-23, 5, "yellow"))
-	if QRString == "patternTest":
+	if QRString == "patternTest":		
+		patternTestList = []
+		patternTestList.append(ObjectPosition(-23, 0, "red", 0))
+		patternTestList.append(ObjectPosition(-24, 15, "blue", 42))
+		patternTestList.append(ObjectPosition(-23.3, 10, "green", 32))	
+		patternTestList.append(ObjectPosition(-23, 5, "yellow", 18))	
+		return patternTestList
+	elif QRString == "patternTest2":
+		patternTestList = []
+		patternTestList.append(ObjectPosition(-24.3, 12, "red", -65))
+		patternTestList.append(ObjectPosition(-19, 13.5, "yellow", 42))
+		patternTestList.append(ObjectPosition(-21, 5, "green", 20))
+		patternTestList.append(ObjectPosition(-15, 8, "blue", -60))			
 		return patternTestList
 
 def getBrickPosition(color):
 	if color== "red":
-		return [248, 110]
-	elif color == "green":		
-		return [130, 130]
+		return [300, 100]
+		#return [248, 110]
+	elif color == "green":	
+		return [300, 100]	
+		#return [130, 130]
 	elif color == "blue":
-		return [65, 230]
+		return [300, 100]
+		#return [65, 230]
+		return [300, 100]
 	elif color == "yellow":
-		return [110, 272]
+		#return [110, 272]
+		return [300, 100]
 
 def pickup(x, y):
-	return [[x, y, 10, 0.2, 0],[x, y, 0.8, 0, 0],[x, y, 1, 0.8, 0],[x, y, 10, 0.8, 0],[25, 0, 15, 0.8, 0]]
+	return [[x, y, 10, 0.2, 0],[x, y, 1, 0, 0],[x, y, 1, 0.8, 0],[x, y, 10, 0.8, 0],[25, 0, 15, 0.8, 0]]
 
-def delivery(x, y):
-	return [[x, y, 10, 0.8, 0],[x, y, 10, 0.8, 0],[x, y, 1, 0.8, 0],[x, y, 1, 0.5, 0],[x, y, 10, 0.5, 0],[25, 0, 15, 0.2, 0]]
+def delivery(x, y, angle):
+	motorAngleValue = angle/58.33
+	return [[x, y, 10, 0.8, 0],[x, y, 10, 0.8, motorAngleValue],[x, y, 1, 0.8, motorAngleValue],[x, y, 1, 0.5, motorAngleValue],[x, y, 10, 0.5, motorAngleValue],[25, 0, 15, 0.2, 0]]
 	
 
 def main():
@@ -143,12 +158,12 @@ def main():
 				pixel_coord = getBrickPosition(color)
 				pickup_coord = calcObjectPos.calculateObjectPosition(pixel_coord[0], pixel_coord[1])
 				print(pickup_coord[0],pickup_coord[1])
-				node = ActionExampleNode("/arm_controller/follow_joint_trajectory", pickup_coord[0], pickup_coord[1], 1)
+				node = ActionExampleNode("/arm_controller/follow_joint_trajectory", pickup_coord[0], pickup_coord[1], 0, 1)
 				node.send_command()
 				#pickup(pickup_coord[0],pickup_coord[1])
 				#print(pickup_coord)
 				
-				node = ActionExampleNode("/arm_controller/follow_joint_trajectory", position.x_coord, position.y_coord, 0)
+				node = ActionExampleNode("/arm_controller/follow_joint_trajectory", position.x_coord, position.y_coord, position.angle, 0)
 				node.send_command()
 				#delivery(position.x_coord, position.y_coord)
 				print(position.x_coord, position.y_coord)
