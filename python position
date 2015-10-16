@@ -1,0 +1,8 @@
+Matlab til python:
+
+For at kunne bruge udregningerne lavet i Matlab i det samlede projekt skulle vi have konverteret disse rotations transformationer til python kode.  Da det ikke var muligt at mappe direkte fra matlab til python pga. den brugte ”se2” funktion fra robotics toolbox, fandt vi et 2D geometri bibliotek til python ved navn ”Planar”.  Vha. dette bibliotek, kunne vi lave vores lineær transformation i 2D og derefter rotere vores transformerede frame så det passer til QRBotten. Python koden herunder viser hvordan vi benytter Planar bibliotekets translation funktion til at flytte koordinat systemet så det passer til robottens placering, og rotation funktionen som roterer dette koordinat system så vender rigtigt ift. kamera framet. Variablerne x_coordinate_robot_position og y_coordinate_robot_position er robottens verdens koordinater set fra kamera framet.
+ 
+ 
+Måden hvorpå vi så udregner et objekts position ud fra robotten frame, er ved først at finde de aktuelle distancer set fra kamera framet. Dette gøres ved at multiplicere længde og højde opløsningen med de x og y koordinater, angivet i pixels, som modtages fra vision delen. Den aktuelle højde og længde udgør derfor et objekts position set fra kamera framet. Der gøres her brug af en funktion fra Planar biblioteket ”Vec2” laver vores aktuelle distancer om til en vector. For så at finde et objekts position set fra robotten frame er ved at tage den inverse robot frame og multiplicerer med vores vector som derved retuneres.
+// Insert picture
+
