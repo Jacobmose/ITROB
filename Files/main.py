@@ -88,8 +88,8 @@ class ActionExampleNode:
 
 class ObjectPosition(object):
 	def __init__(self, y_coord=None, x_coord=None, color=None, angle=None):
-		self.y_coord = y_coord
-		self.x_coord = x_coord
+		self.x_coord_coord = y_coord
+		self.y_coord = x_coord
 		self.color = color
 		self.angle = angle
 
@@ -99,8 +99,9 @@ def checkForQRCode():
 	return 1
 
 def getQRString():
-	return "patternTest"
+	#return "patternTest"
 	#return "patternTest2"
+	return "patternTest3"
 
 def getPattern(QRString):
 	if QRString == "patternTest":		
@@ -116,6 +117,17 @@ def getPattern(QRString):
 		patternTestList.append(ObjectPosition(-19, 13.5, "yellow", 42))
 		patternTestList.append(ObjectPosition(-21, 5, "green", 20))
 		patternTestList.append(ObjectPosition(-15, 8, "blue", -60))			
+		return patternTestList
+	elif QRString == "patternTest3":
+		patternTestList = []
+		patternTestList.append(ObjectPosition(-4.5, -17.2, "yellow", -10.2))
+		patternTestList.append(ObjectPosition(-4.5, -23.9, "yellow", -8.59))
+		patternTestList.append(ObjectPosition(2.3, -15.5, "green", -88.23))
+		patternTestList.append(ObjectPosition(2.3, -25.2, "blue", 88.46))
+		patternTestList.append(ObjectPosition(9, -15.5, "green", -64.4))
+		patternTestList.append(ObjectPosition(9, -25.2, "blue", 105.71))
+		patternTestList.append(ObjectPosition(14, -17.2, "red", 40.7))
+		patternTestList.append(ObjectPosition(14, -23.9, "red", 34.2)	
 		return patternTestList
 
 def getBrickPosition(color):
